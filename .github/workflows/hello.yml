@@ -3,14 +3,10 @@ on:
       branches:
         - main
   
-defaults:
-    run:
-      working-directory: ./all_in_docker
-  
 jobs:
     build:
       runs-on: ubuntu-latest
-      
+  
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v2
@@ -20,23 +16,26 @@ jobs:
           with:
             node-version: 16
   
-        - name: Install Client Dependencies and Build
+        - name: Install Dependencies and Start Client in tmux
           run: |
             cd client
             npm install
-            npm run start
+            tmux new-session -d -s client_session
+            tmux send-keys -t client_session 'npm run start' Enter
   
-        - name: Set up Node.js 14 for Server
-          uses: actions/setup-node@v3
-          with:
-            node-version: 14
+        - name: Set up tmux for Server
+          run: |
+            sudo apt-get install -y tmux
   
-        - name: Install Server Dependencies and Build
+        - name: Run Server in tmux
           run: |
             cd server
-            npm install
-            node index.js
+            tmux new-session -d -s server_session
+            tmux send-keys -t server_session 'npm install' Enter
+            tmux send-keys -t server_session 'node index.js' Enter
   
-
+        - name: Wait for Server to Start
+          run: sleep 10  # Adjust this wait time as needed
   
+        # Continue with additional steps, if necessary
   
