@@ -5,7 +5,7 @@ on:
   
 defaults:
     run:
-      working-directory: ./all_in_docker/client
+      working-directory: ./all_in_docker
   
 jobs:
     build:
@@ -14,14 +14,29 @@ jobs:
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v2
-      
+  
         - name: Set up Node.js 16
           uses: actions/setup-node@v3
           with:
-            node-version: 14
-      
-        - name: Install Dependencies and Build
+            node-version: 16
+  
+        - name: Install Client Dependencies and Build
           run: |
+            cd client
             npm install
             npm run start
+  
+        - name: Set up Node.js 14 for Server
+          uses: actions/setup-node@v3
+          with:
+            node-version: 14
+  
+        - name: Install Server Dependencies and Build
+          run: |
+            cd server
+            npm install
+            node index.js
+  
+
+  
   
