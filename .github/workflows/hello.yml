@@ -38,4 +38,6 @@ jobs:
           run: sleep 10  # Adjust this wait time as needed
   
         # Continue with additional steps, if necessary
-  
+defaults:
+  run:
+    working-directory: ./all_in_docker/
