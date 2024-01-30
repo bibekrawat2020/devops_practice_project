@@ -17,7 +17,7 @@ jobs:
             node-version: 16
   
         - name: Install Dependencies and Build
-          working-directory: all_in_docker/client
+          working-directory: ./all_in_docker/client
           run: |
             cd all_in_docker/client
             npm install
