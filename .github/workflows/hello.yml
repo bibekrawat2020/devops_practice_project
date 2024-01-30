@@ -35,7 +35,7 @@ jobs:
             tmux send-keys -t server_session 'node index.js' Enter
   
         - name: Wait for Server to Start
-          run: sleep 10  # Adjust this wait time as needed
+          run: sleep 100  # Adjust this wait time as needed
   
         # Continue with additional steps, if necessary
 defaults:
