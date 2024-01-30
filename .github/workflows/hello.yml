@@ -2,24 +2,26 @@ on:
     push:
       branches:
         - main
-  
+      paths:
+        - 'all_in_docker/client/**'
+    
 jobs:
     build:
       runs-on: ubuntu-latest
-  
+    
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v2
-  
+    
         - name: Set up Node.js 16
           uses: actions/setup-node@v4
           with:
             node-version: 16
-  
+    
         - name: Install Dependencies and Build
-          working-directory: ./all_in_docker/client
           run: |
             cd all_in_docker/client
             npm install
             npm run build
+  
   
