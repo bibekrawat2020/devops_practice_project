@@ -8,21 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./all_in_docker/client
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-
-    - name: Install Dependencies
-      run: npm install
 
     - name: Build Application
       run: |
@@ -36,5 +25,13 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
-    - name: Transfer Build Files to Ubuntu Instance
-      run: scp -r build/* ${{ secrets.REMOTE_USERNAME }}@${{ secrets.REMOTE_HOST }}:/tmp
+    - name: executing remote ssh commands using passwordss
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USERNAME }}@${{ secrets.REMOTE_HOST }} << EOF
+        cd /home/ubuntu/devops-class
+        git pull origin main
+        cd all_in_docker
+        sudo docker-compose build
+        sudo docker-compose up -d backend
+        sudo docker-compose up -d frontend
+        EOF
