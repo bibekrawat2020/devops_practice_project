@@ -96,7 +96,7 @@ function App() {
             setCountry(event.target.value);
           }}
         />
-        <label>Position:</label>
+        <label>Which Position:</label>
         <input
           type="text"
           onChange={(event) => {
